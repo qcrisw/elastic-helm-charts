@@ -428,6 +428,12 @@ spec:
       {{- if eq "string" (printf "%T" .Values.extraContainers) }}
 {{ tpl .Values.extraContainers . | indent 6 }}
       {{- else }}
+      {{- if kindIs "map" .Values.extraContainers }}
+      {{- range $container := .Values.extraContainers }}
+      - {{ toYaml $container | nindent 8 }}
+      {{- end }}
+      {{- else }}
 {{ toYaml .Values.extraContainers | indent 6 }}
+      {{- end }}
       {{- end }}
       {{- end }}
